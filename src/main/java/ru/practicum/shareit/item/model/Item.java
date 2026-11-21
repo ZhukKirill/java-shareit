@@ -1,14 +1,19 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
 
 /**
  * TODO Sprint add-controllers.
  */
 @EqualsAndHashCode(of = "id")
-@Data
+@Getter
+@Setter
+@Entity
+@Table(name = "items")
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long owner;
     private String name;
