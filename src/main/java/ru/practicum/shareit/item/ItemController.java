@@ -5,15 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.PatchItemRequest;
+import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.service.ItemService;
-
 import java.util.Collection;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +23,7 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto findById(@PathVariable Long itemId) {
+    public ItemDetailsDto findById(@PathVariable Long itemId) {
         return itemService.findById(itemId);
     }
 
@@ -40,7 +35,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public Collection<ItemDto> findItemsByUser(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public Collection<ItemDetailsDto> findItemsByUser(@RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemService.findAllByUser(userId);
     }
 
@@ -57,5 +52,12 @@ public class ItemController {
     @DeleteMapping()
     public void deleteItemsByUser(@RequestHeader("X-Sharer-User-Id") Long userId) {
         itemService.deleteItemsByUser(userId);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentResponseDto addComments(@RequestBody @Valid CommentRequestDto commentRequest,
+                            @RequestHeader("X-Sharer-User-Id") Long userId,
+                            @PathVariable Long itemId) {
+        return itemService.addComment(commentRequest, userId, itemId);
     }
 }

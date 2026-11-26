@@ -11,9 +11,9 @@ public class UserDto {
 
     @NotBlank(message = "email не должен быть пустым")
     @Email(message = "Некорректный email")
-    @Size(max = 100, message = "длина email не должна превышать 100 символов")
+    @Size(max = 255, message = "длина email не должна превышать 255 символов")
     private String email;
     @NotBlank(message = "имя не должно быть пустым")
-    @Size(max = 100, message = "имя не может быть больше 100 символов")
+    @Size(max = 255, message = "имя не может быть больше 255 символов")
     private String name;
 }

@@ -10,11 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.practicum.shareit.exeption.ConflictException;
-import ru.practicum.shareit.exeption.ForbiddenException;
-import ru.practicum.shareit.exeption.NotFoundException;
-import ru.practicum.shareit.exeption.ValidationException;
-
+import ru.practicum.shareit.exeption.*;
 import java.util.Map;
 
 @Slf4j
@@ -44,7 +40,7 @@ public class GlobalExceptionHandler {
                 "error", ex.getMessage()
         );
         log.info(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -68,6 +64,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<Map<String, String>> handleBadRequest(Exception e) {
+        log.info(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+    }
+
+    @ExceptionHandler(ItemNotAvailableException.class)
+    public ResponseEntity<Map<String, String>> handleItemNotAvailable(Exception e) {
         log.info(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
     }
